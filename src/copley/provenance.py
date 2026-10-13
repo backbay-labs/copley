@@ -1,5 +1,5 @@
 """Run provenance: git revision, dirty status, dependency-lock digest, dataset digests,
-and a per-run metadata record (handoff §9)."""
+and a per-run metadata record."""
 
 from __future__ import annotations
 

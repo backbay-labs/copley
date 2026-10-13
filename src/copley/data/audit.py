@@ -1,4 +1,4 @@
-"""Source/label correlation audit (handoff §5, constraint 3).
+"""Source/label correlation audit.
 
 If benign examples come from one set of sources and malicious from a disjoint set, a learned
 model can score the *source* rather than the behavior. This module measures that risk from

@@ -40,4 +40,5 @@ HF_HUB_OFFLINE=1 uv run --locked --extra train --extra serve pytest -q   # full 
 - Pydantic v2 models; `snake_case` modules; keep modules small and cohesive.
 - Keep the core install free of CUDA/torch/FlashAttention requirements.
 
-Source of truth for project intent: `HANDOFF.md`. Keep it current when status changes.
+Project intent and current status live in `README.md`; technical contracts live in `docs/`.
+Keep them current when status changes.

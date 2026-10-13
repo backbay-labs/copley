@@ -6,19 +6,18 @@
 
 **Cyber defense you can own.**
 
-Copley is building a family of **small, open cyber decision models**—with the ambition to put
-detection capability in the hands of every defender.
-
-Models you can run locally. Inspect. Retrain. Build into your own systems.
-
-**One model. One defined job. Evidence in, decision out.**
+Copley is building **small, open cyber decision models** for the systems defenders actually run.
+Each model answers one security question from a bounded window of evidence.
 
 ```text
 likely_benign  |  suspicious  |  abstain
 ```
 
-The ambition is an open library of security decisions: specialized models, reproducible
-evaluations, and published failures that the whole field can learn from.
+Keep inference beside your telemetry. Inspect the weights. Reproduce the evaluation.
+Retrain for your environment.
+
+Progress means a model another defender can run, a result they can reproduce, and a failure
+they can learn from.
 
 Built by **Backbay Industries**.
 
@@ -50,7 +49,7 @@ Inspect the report at `artifacts/smoke/report/`.
 
 > **Early research.** The pipeline runs on synthetic fixtures: smoke tests, not detection
 > results. No real-telemetry training or evaluation yet. The next milestone is a reviewed real
-> corpus and the first held-out comparison. [Current status](HANDOFF.md).
+> corpus and the first held-out comparison.
 
 **Help build the evidence:** reviewed telemetry, detection expertise, and evaluation critique
 are the highest-value contributions.
@@ -58,7 +57,7 @@ are the highest-value contributions.
 ---
 
 [Architecture](docs/architecture.md) · [Data plan](docs/data-plan.md) ·
-[Evaluation](docs/evaluation.md) · [Training](docs/training.md) · [Project status](HANDOFF.md)
+[Evaluation](docs/evaluation.md) · [Training](docs/training.md)
 
 Code: [Apache-2.0](LICENSE). Bundled SigmaHQ rules: DRL 1.1. External data and models retain
 their own terms. [Third-party notices](THIRD_PARTY_NOTICES.md).

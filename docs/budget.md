@@ -35,6 +35,5 @@ time, steps, final train loss, best validation loss, and the device used.
 In addition, each `copley smoke` run writes a **per-run record** (`run_record.json`) via
 `provenance.run_record`, capturing: config, seed, git revision + dirty status, lock digest,
 order-independent **source and per-split content digests** (`dataset_digest`), artifact
-digests, elapsed seconds, and the `exploratory_only` audit verdict. This satisfies the
-reproducibility requirements in handoff §9. Never commit secrets, private telemetry, or
-unreviewed raw datasets (`.gitignore` excludes `data/` and `artifacts/`).
+digests, elapsed seconds, and the `exploratory_only` audit verdict. Never commit secrets,
+private telemetry, or unreviewed raw datasets (`.gitignore` excludes `data/` and `artifacts/`).
