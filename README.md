@@ -6,37 +6,34 @@
 
 **Cyber defense you can own.**
 
-Copley is building **small, open cyber decision models** for the systems defenders actually run.
-Each model answers one security question from a bounded window of evidence.
+Copley develops **small, open cyber decision models**. Each model maps a bounded window of
+security telemetry to a typed assessment:
 
 ```text
 likely_benign  |  suspicious  |  abstain
 ```
 
-Keep inference beside your telemetry. Inspect the weights. Reproduce the evaluation.
-Retrain for your environment.
-
-Progress means a model another defender can run, a result they can reproduce, and a failure
-they can learn from.
+The project centers on local inference, reproducible evaluation, and task-specific models
+that defenders can inspect and retrain.
 
 Built by **Backbay Industries**.
 
-## The first bet
+## Process execution
 
-**Can a compact learned model catch suspicious process activity that established rules miss?**
+The first task is suspicious Windows process execution (`process_execution.suspicious.v1`).
+The comparison uses a pinned **Sigma rule subset**, a **character TF-IDF / logistic-regression
+baseline**, and a planned **ModernBERT-base fine-tune** on the same normalized telemetry.
 
-We're starting with Windows process execution: a pinned **Sigma rule subset**, a **linear
-baseline**, and a planned **ModernBERT fine-tune**, evaluated against the same normalized
-evidence. We'll measure where learned detection adds value—and where the rules win.
+Evaluation examines detection coverage, false positives, and rule–model disagreements under
+group-disjoint splits.
 
-## Built to be challenged
+## Method
 
-- **Evidence only.** Labels and provenance stay outside model inputs.
-- **Abstention is part of the contract.** Insufficient evidence can produce `abstain`.
-- **Show the failures.** Evaluation reports include errors, abstentions, and rule–model
-  disagreements.
+- **Input isolation.** Labels and provenance are excluded from model inputs.
+- **Abstention.** Insufficient evidence can produce `abstain`.
+- **Evaluation accounting.** Reports retain denominators, abstentions, and errors.
 
-## Run the scaffold
+## Development
 
 Python 3.12 + [uv](https://docs.astral.sh/uv/).
 
@@ -51,8 +48,8 @@ Inspect the report at `artifacts/smoke/report/`.
 > results. No real-telemetry training or evaluation yet. The next milestone is a reviewed real
 > corpus and the first held-out comparison.
 
-**Help build the evidence:** reviewed telemetry, detection expertise, and evaluation critique
-are the highest-value contributions.
+Contributions are welcome in source-balanced telemetry, reviewed labels, and independent
+evaluation.
 
 ---
 
