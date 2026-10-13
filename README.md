@@ -2,8 +2,6 @@
   <img src="docs/copley-hero.png" alt="Copley: small, open cyber decision models. Built by Backbay Industries." width="100%">
 </p>
 
-# Copley
-
 **Cyber defense you can own.**
 
 Copley develops **small, open cyber decision models**. Each model maps a bounded window of
@@ -15,8 +13,6 @@ likely_benign  |  suspicious  |  abstain
 
 The project centers on local inference, reproducible evaluation, and task-specific models
 that defenders can inspect and retrain.
-
-Built by **Backbay Industries**.
 
 ## Process execution
 
