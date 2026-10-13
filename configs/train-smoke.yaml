@@ -1,0 +1,22 @@
+# Offline tiny neural smoke test. Randomly initialized ModernBERT, char tokenizer, CPU-safe.
+# Produces a `test_only` artifact that cannot masquerade as a trained detector.
+# Run with: uv run --locked --extra train copley train --config configs/train-smoke.yaml
+run_name: copley-process-modernbert
+mode: tiny
+num_labels: 2
+max_length: 128
+learning_rate: 0.0005
+epochs: 3
+batch_size: 4
+gradient_accumulation_steps: 1
+seed: 42
+device: cpu
+dtype: float32
+attn_implementation: sdpa
+max_steps: 20
+output_dir: artifacts/neural-smoke
+tiny_hidden_size: 64
+tiny_layers: 2
+tiny_heads: 2
+tiny_vocab_size: 1024
+tiny_max_position: 256

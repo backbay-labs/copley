@@ -1,0 +1,27 @@
+# Real ModernBERT-base fine-tuning config. NOT RUN during the scaffold task ($0 authorized).
+# Requires the `train` extra and a model download (unless cached). Verify prerequisites with:
+#   uv run --locked --extra train copley train --config configs/modernbert-base.yaml --dry-run
+#
+# base_model_revision is the HuggingFace main-branch commit verified on 2026-10-13
+# (see docs/research.md). Re-verify before a real run; do not use a fabricated SHA.
+run_name: copley-process-modernbert-base
+mode: real
+base_model: answerdotai/ModernBERT-base
+base_model_revision: 8949b909ec900327062f0ebf497f51aef5e6f0c8
+trust_remote_code: false
+num_labels: 2
+max_length: 512
+learning_rate: 0.00002
+epochs: 3
+batch_size: 8
+gradient_accumulation_steps: 4
+seed: 42
+weight_decay: 0.01
+# Guards (a local timeout does NOT deallocate a rented GPU — see docs/budget.md).
+max_steps: null
+max_wall_seconds: null
+device: auto          # cuda for real training; cpu/mps possible but slow
+dtype: bfloat16       # float32 on CPU; bfloat16/float16 on GPU
+attn_implementation: sdpa   # flash_attention_2 is OPTIONAL, never required
+# data_path: data/real/train.jsonl   # reviewed, labeled windows; uncomment when available
+output_dir: artifacts/modernbert-base

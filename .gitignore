@@ -1,0 +1,23 @@
+# Generated data, weights, caches, run outputs
+/data/
+/artifacts/
+/runs/
+*.sqlite3
+*.sqlite3-*
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+*.egg-info/
+dist/
+build/
+
+# HF / torch caches if set locally
+.cache/
+
+# OS
+.DS_Store

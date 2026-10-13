@@ -1,0 +1,41 @@
+# Pinned Sigma rule subset for Copley's process_execution.suspicious.v1 task.
+#
+# This is a SELECTED subset, not full Sigma coverage. A window missed here is a miss by
+# this subset only, not proof that all Sigma rules would miss it.
+#
+# `sigmahq` rules are vendored from the SigmaHQ repository under the Detection Rule
+# License (DRL) 1.1 (see THIRD_PARTY_NOTICES.md). `local` rules are original Copley work
+# under Apache-2.0. sha256 is verified at load time; a mismatch is a hard error.
+version: 1
+sigmahq_source:
+  repo: https://github.com/SigmaHQ/sigma
+  revision: 42478221b1a062411b8185732c82caa439271122
+  path_prefix: rules/windows/process_creation/
+  license: DRL-1.1
+  license_url: https://github.com/SigmaHQ/Detection-Rule-License
+  access_date: 2026-10-13
+rules:
+  - set: sigmahq
+    file: proc_creation_win_certutil_download.yml
+    sha256: 1262c65c22592b28f2c63906462f07f9c0d95e8fa065405505d18979a5f278af
+  - set: sigmahq
+    file: proc_creation_win_powershell_base64_encoded_cmd.yml
+    sha256: aaa77a412c21e6e98226e130b58f552c9e1a758bb0ae16822225b2fbc284b10c
+  - set: sigmahq
+    file: proc_creation_win_mshta_http.yml
+    sha256: 8930fa3632fec016d1fb6940bfbe48139b255855eba26e5784da57db3dc77922
+  - set: sigmahq
+    file: proc_creation_win_wmic_process_creation.yml
+    sha256: 0f73159c2959355741f6170f489a4effc9a60579638c7e7d5e79bdaf124ae739
+  - set: sigmahq
+    file: proc_creation_win_bitsadmin_download.yml
+    sha256: 26747eb1e298fb9243b12057545424ea3a51733c1dc9dc03dcbb2e32339e70bc
+  - set: sigmahq
+    file: proc_creation_win_whoami_all_execution.yml
+    sha256: fd87990871c3324c5e3eb20b4cd6cede336e23cbe3c1a35307b7894581869f24
+  - set: local
+    file: copley_rundll32_temp_dll.yml
+    sha256: 81393dfcbdd692531d1a15e279989d48540fbbdc973ba6566fc240f70a9200e7
+  - set: local
+    file: copley_powershell_downloadstring.yml
+    sha256: bd3c8e9f89ca515eb9a7795a3361ce8134b69cfb12719a321b1aad59714da560

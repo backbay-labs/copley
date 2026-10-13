@@ -1,0 +1,51 @@
+# External data sources for Copley. Opt-in, selective, pinned.
+#
+# NOTHING here is downloaded during ordinary tests. `copley data fetch --dry-run` prints
+# the plan. Actual fetching requires removing --dry-run AND each source being `enabled`.
+# Unverified sources stay disabled so the fixture pipeline always works without network.
+#
+# A repository of attack executions is NOT an automatically event-labeled supervised
+# dataset. Each fetched file must still be reviewed and annotated at the event/window level
+# before use. Default: no raw-data redistribution.
+version: 1
+sources:
+  - id: splunk-attack-data-rundll32-tmp
+    description: >
+      Single Sysmon capture from a controlled rundll32-from-temp execution. Candidate
+      malicious-provenance example (controlled attack execution), requires per-event review
+      before any window is labeled malicious.
+    enabled: false
+    acquisition: git_lfs
+    repo: https://github.com/splunk/attack_data
+    revision: eac2f8f675ec31a6618003399dcc53641524e673
+    license: Apache-2.0
+    license_url: https://github.com/splunk/attack_data/blob/master/LICENSE
+    redistribution: not_redistributed_by_copley
+    label_availability: unlabeled_requires_review
+    provenance_category: controlled_attack_execution
+    adapter: sysmon_xml
+    max_file_bytes: 1048576
+    files:
+      - path: datasets/attack_techniques/T1218.011/rundll32_dll_in_temp/rundll32_tmp.log
+        sha256: 5ac4747551f733d673cd6828a55732b7b542d3552698325cbdac2df2a69aa62f
+        size: 4057
+    notes: >
+      sha256 is the Git LFS object id recorded in the pointer file at the pinned revision.
+      Access verified 2026-10-13. Not fetched during this scaffold task ($0 authorized,
+      network-free tests).
+  - id: splunk-attack-data-wmic-xsl
+    description: Candidate Sysmon capture for wmic/LOLBIN activity; disabled pending review.
+    enabled: false
+    acquisition: git_lfs
+    repo: https://github.com/splunk/attack_data
+    revision: eac2f8f675ec31a6618003399dcc53641524e673
+    license: Apache-2.0
+    redistribution: not_redistributed_by_copley
+    label_availability: unlabeled_requires_review
+    provenance_category: controlled_attack_execution
+    adapter: sysmon_xml
+    max_file_bytes: 1048576
+    files:
+      - path: datasets/attack_techniques/T1059.001/atomic_red_team/captcha_windows-sysmon.log
+        sha256: 2349326b9042ba212dc16a4764a2cd1fbfa318a792c5591594b77bbfd20ddc9e
+        size: 2153

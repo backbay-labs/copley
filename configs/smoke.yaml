@@ -1,0 +1,6 @@
+# Linear/Sigma offline smoke pipeline (no training config needed; used for documentation).
+# Run with: uv run --locked copley smoke --out artifacts/smoke
+seed: 42
+dataset: synthetic_fixtures
+split_ratios: [0.5, 0.2, 0.15, 0.15]  # train / validation / calibration / test
+note: "SYNTHETIC FIXTURE SMOKE TEST — NOT A DETECTION BENCHMARK"

@@ -1,0 +1,21 @@
+# Copley budget policy. Editable. Paid execution is DISABLED in this build.
+#
+# These are planning targets and guards, NOT a provider-side billing cap. Software timeouts
+# do not deallocate rented GPUs; see docs/budget.md for termination/cleanup responsibilities.
+version: 1
+currency: USD
+targets:
+  first_version_target: 500
+  ceiling: 1000
+authorized_spend_this_task: 0
+paid_execution_enabled: false
+assumptions:
+  gpu_hourly_rate_usd: null        # supply explicitly before estimating; no guess here
+  storage_gb_month_usd: null
+guards:
+  max_wall_seconds: null
+  max_steps: null
+notes:
+  - "No cost was incurred during the scaffold task."
+  - "Estimate cost only AFTER a measured small run with an explicit hourly rate."
+  - "Report GPU time, preprocessing time, storage, and wall time separately."

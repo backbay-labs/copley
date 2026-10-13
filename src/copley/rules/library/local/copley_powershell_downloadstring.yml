@@ -1,0 +1,29 @@
+title: PowerShell Net.WebClient DownloadString (Copley)
+id: fb91bd09-3e5f-482e-a397-53ff4d2e3d5d
+status: experimental
+description: >
+  Original Copley rule. Detects PowerShell invoking Net.WebClient DownloadString /
+  DownloadFile, a common staging technique. Authored for Copley offline tests.
+author: Backbay Industries (Copley)
+license: Apache-2.0
+date: 2026-10-13
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_img:
+        - Image|endswith:
+              - '\powershell.exe'
+              - '\pwsh.exe'
+        - OriginalFileName:
+              - 'PowerShell.EXE'
+              - 'pwsh.dll'
+    selection_webclient:
+        CommandLine|contains:
+            - 'Net.WebClient'
+            - 'DownloadString('
+            - 'DownloadFile('
+    condition: all of selection_*
+falsepositives:
+    - Administrative scripts that legitimately fetch content
+level: medium

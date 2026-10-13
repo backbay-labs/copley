@@ -1,0 +1,27 @@
+title: Rundll32 Executing DLL From Temp Directory (Copley)
+id: e3afbe9c-4aec-467c-8f25-6f83988350a6
+status: experimental
+description: >
+  Original Copley rule. Detects rundll32 launching a DLL located in a user or Windows
+  Temp directory, a common pattern in controlled LOLBIN executions. Authored for Copley
+  offline tests; not a SigmaHQ rule.
+author: Backbay Industries (Copley)
+license: Apache-2.0
+date: 2026-10-13
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_img:
+        - Image|endswith: '\rundll32.exe'
+        - OriginalFileName: 'RUNDLL32.EXE'
+    selection_temp:
+        CommandLine|contains:
+            - '\Temp\'
+            - '\AppData\Local\Temp\'
+    selection_dll:
+        CommandLine|contains: '.dll'
+    condition: all of selection_*
+falsepositives:
+    - Legitimate installers that stage DLLs in temp
+level: medium

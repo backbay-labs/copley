@@ -1,0 +1,55 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  core:
+    name: core (lint, type, test; no extras)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          version: "0.8.14"
+      - name: Set up Python
+        run: uv python install 3.12
+      - name: Sync (core + dev only)
+        run: uv sync --locked --no-default-groups --group dev
+      - name: Ruff lint
+        run: uv run --locked --no-default-groups --group dev ruff check src tests
+      - name: Ruff format check
+        run: uv run --locked --no-default-groups --group dev ruff format --check src tests
+      - name: Mypy
+        run: uv sync --locked --all-extras && uv run --locked mypy
+      - name: Core tests (no GPU, no network, no model download)
+        run: uv run --locked --no-default-groups --group dev pytest -q
+      - name: Fixture smoke
+        run: uv run --locked --no-default-groups --group dev copley smoke --out artifacts/ci-smoke
+
+  neural-smoke:
+    name: neural smoke (offline tiny model)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          version: "0.8.14"
+      - name: Set up Python
+        run: uv python install 3.12
+      - name: Sync with train + serve extras
+        run: uv sync --locked --extra train --extra serve
+      - name: Neural + API tests (offline; HF_HUB_OFFLINE)
+        env:
+          HF_HUB_OFFLINE: "1"
+          TRANSFORMERS_OFFLINE: "1"
+        run: uv run --locked --extra train --extra serve pytest -q -m "neural or serve or not neural"
+      - name: Tiny neural train smoke (test_only artifact)
+        env:
+          HF_HUB_OFFLINE: "1"
+        run: uv run --locked --extra train copley train --config configs/train-smoke.yaml
+# No paid services, no network-dependent data tests, no real model downloads run in CI.
