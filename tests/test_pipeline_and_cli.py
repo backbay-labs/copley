@@ -25,6 +25,12 @@ def test_run_smoke_full_slice(tmp_path):
     detectors = {m["detector"] for m in metrics["metrics"]}
     assert {"sigma", "linear"} <= detectors
     assert result.example_prediction["fixture_trained"] is True
+    # Run record + source audit are produced and consistent.
+    assert result.run_record_path.exists()
+    assert result.source_audit["exploratory_only"] is True
+    assert "source_label_audit" in metrics
+    run_rec = json.loads(result.run_record_path.read_text())
+    assert run_rec["split_digests"].keys() == {"train", "validation", "calibration", "test"}
 
 
 def test_smoke_report_has_banner(tmp_path):

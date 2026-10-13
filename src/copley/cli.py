@@ -148,6 +148,28 @@ def data_validate(
         raise typer.Exit(code=1)
 
 
+@data_app.command("audit")
+def data_audit_sources(
+    input: Path = typer.Option(..., "--input", help="JSONL of labeled windows"),
+) -> None:
+    """Audit source/label correlation; flags source-classifier risk and exploratory-only status."""
+    from copley.data.audit import audit_source_label_correlation
+    from copley.data.io import load_labeled
+
+    loaded = load_labeled(input)
+    if not loaded.ok:
+        _echo({"error": "validation failed", "details": [e.__dict__ for e in loaded.errors]})
+        raise typer.Exit(code=1)
+    audit = audit_source_label_correlation(loaded.records)
+    _echo(audit.to_dict())
+    if audit.exploratory_only:
+        typer.secho(
+            "EXPLORATORY ONLY: source/label correlation blocks strong release claims.",
+            fg=typer.colors.YELLOW,
+            err=True,
+        )
+
+
 @data_app.command("split")
 def data_split(
     input: Path = typer.Option(..., "--input"),

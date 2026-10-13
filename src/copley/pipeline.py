@@ -9,9 +9,11 @@ a network service, or needs a GPU, and it fails loudly on any broken stage.
 from __future__ import annotations
 
 import json
+import time
 from dataclasses import dataclass
 from pathlib import Path
 
+from copley.data.audit import audit_source_label_correlation
 from copley.data.fixtures import build_fixtures
 from copley.data.io import load_labeled, write_labeled
 from copley.data.split import SplitResult, split
@@ -25,6 +27,7 @@ from copley.models.calibration import (
     write_calibration,
 )
 from copley.models.linear import LinearPredictor, train_linear
+from copley.provenance import dataset_digest, run_record, write_run_record
 from copley.rules.engine import compile_rules, run_rules
 from copley.rules.manifest import default_manifest_path, load_rule_manifest
 from copley.schemas import ArtifactKind, CalibrationStatus, Label
@@ -40,6 +43,8 @@ class SmokeResult:
     sigma_ok: int
     sigma_failed: int
     example_prediction: dict
+    source_audit: dict
+    run_record_path: Path
 
 
 def _score_split(predictor: LinearPredictor, records) -> tuple[list[float], list[int]]:
@@ -59,6 +64,7 @@ def _score_split(predictor: LinearPredictor, records) -> tuple[list[float], list
 def run_smoke(out_dir: Path, *, seed: int = 42) -> SmokeResult:
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
+    started = time.monotonic()
 
     # 1. fixtures -> disk
     fixtures = build_fixtures()
@@ -70,9 +76,9 @@ def run_smoke(out_dir: Path, *, seed: int = 42) -> SmokeResult:
     if not loaded.ok:
         raise RuntimeError(f"fixture validation failed: {loaded.errors}")
     summary = validate_records(loaded.records, loaded.errors)
-    (out_dir / "validation.json").write_text(
-        json.dumps(summary.to_dict(), indent=2), encoding="utf-8"
-    )
+    audit = audit_source_label_correlation(loaded.records)
+    validation_out = summary.to_dict() | {"source_label_audit": audit.to_dict()}
+    (out_dir / "validation.json").write_text(json.dumps(validation_out, indent=2), encoding="utf-8")
 
     # 3. grouped split
     sr: SplitResult = split(loaded.records, seed=seed)
@@ -132,6 +138,25 @@ def run_smoke(out_dir: Path, *, seed: int = 42) -> SmokeResult:
     example = sr.partitions["test"][0]
     prediction = predictor.predict(example.evidence)
 
+    # 9. per-run metadata record (config, seed, revisions, source/split/artifact digests)
+    run_record_path = out_dir / "run_record.json"
+    record = run_record(
+        kind="smoke",
+        config={"dataset": "synthetic_fixtures", "model": "linear", "sigma_rules": len(entries)},
+        seed=seed,
+        source_digests={"synthetic_fixtures": dataset_digest(loaded.records)},
+        split_digests={part: dataset_digest(recs) for part, recs in sr.partitions.items()},
+        artifact_digests={"linear": md.weights_sha256},
+        elapsed_seconds=round(time.monotonic() - started, 3),
+        extra={
+            "synthetic_fixture_smoke_test": True,
+            "exploratory_only": audit.exploratory_only,
+            "sigma_rules_ok": len(sigma.ok_rules),
+            "sigma_rules_failed": len(sigma.failed_rules),
+        },
+    )
+    write_run_record(run_record_path, record)
+
     return SmokeResult(
         out_dir=out_dir,
         fixtures_path=fixtures_path,
@@ -141,4 +166,6 @@ def run_smoke(out_dir: Path, *, seed: int = 42) -> SmokeResult:
         sigma_ok=len(sigma.ok_rules),
         sigma_failed=len(sigma.failed_rules),
         example_prediction=prediction.model_dump(mode="json"),
+        source_audit=audit.to_dict(),
+        run_record_path=run_record_path,
     )

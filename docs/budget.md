@@ -30,5 +30,11 @@ GPU.** For any later cloud run, you are responsible for:
 Each artifact records config-derived fields plus git revision + dirty status, dependency-lock
 digest, label mapping, base-model revision (real mode), weights sha256, and train counts
 (`ArtifactMetadata` in `src/copley/models/artifact.py`). Training also records elapsed wall
-time, steps, final train loss, best validation loss, and the device used. Never commit secrets,
-private telemetry, or unreviewed raw datasets (`.gitignore` excludes `data/` and `artifacts/`).
+time, steps, final train loss, best validation loss, and the device used.
+
+In addition, each `copley smoke` run writes a **per-run record** (`run_record.json`) via
+`provenance.run_record`, capturing: config, seed, git revision + dirty status, lock digest,
+order-independent **source and per-split content digests** (`dataset_digest`), artifact
+digests, elapsed seconds, and the `exploratory_only` audit verdict. This satisfies the
+reproducibility requirements in handoff §9. Never commit secrets, private telemetry, or
+unreviewed raw datasets (`.gitignore` excludes `data/` and `artifacts/`).

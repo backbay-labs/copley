@@ -123,6 +123,7 @@ class EvaluationResult:
     per_example: list[dict]
     disagreements: dict
     thresholds: dict
+    source_label_audit: dict
 
     def to_dict(self) -> dict:
         return asdict(self)
@@ -232,6 +233,10 @@ def evaluate(
 
     disagreements = _disagreements(labeled, sigma_dec, primary) if primary is not None else {}
 
+    from copley.data.audit import audit_source_label_correlation
+
+    audit = audit_source_label_correlation(labeled)
+
     return EvaluationResult(
         dataset_label=dataset_label,
         synthetic_fixture=synthetic_fixture,
@@ -249,6 +254,7 @@ def evaluate(
             "linear": linear.metadata.threshold if linear else None,
             "neural": neural.metadata.threshold if neural else None,
         },
+        source_label_audit=audit.to_dict(),
     )
 
 

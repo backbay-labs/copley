@@ -42,8 +42,13 @@ files at the pinned revision (verified 2026-10-13), not content hashes of downlo
 2. **Do not call agreement with Sigma "independent accuracy"** if you trained on Sigma matches.
    The linear/neural models train on human/controlled labels, not on Sigma output.
 3. **Source/label correlation is a known risk.** If all benign come from one source and all
-   malicious from another, the result is a source classifier. With only unmatched sources,
-   label the experiment *exploratory* and block strong release claims. (See `docs/evaluation.md`.)
+   malicious from another, the result is a source classifier. This is now *measured*:
+   `copley data audit --input FILE` (and `src/copley/data/audit.py`) keys by acquisition
+   `source_id` (not provenance category, which is label-correlated by design) and reports, per
+   source, the class counts, whether any source is single-class, and an `exploratory_only`
+   verdict. When sources are class-disjoint — or when there are fewer than two labeled sources
+   (the current fixture case) — the audit sets `exploratory_only=true`, which the smoke run
+   records and the evaluation report surfaces to block strong release claims.
 4. **Group before splitting.** `split.py` groups by run/incident/scenario/host/template (or a
    content hash fallback) and keeps a group wholly within one partition. Near-duplicates are
    collapsed within a group. Duplicate handling is decided from input structure, never test

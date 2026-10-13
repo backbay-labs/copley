@@ -69,6 +69,22 @@ def render_markdown(result: dict) -> str:
         lines.append(f"- **{k}**: {_fmt(v)} (frozen before test evaluation)")
     lines.append("")
 
+    audit = result.get("source_label_audit")
+    if audit:
+        lines += ["## Source/label correlation audit", ""]
+        lines.append(
+            f"- **labeled sources with both classes**: {audit['sources_with_both_classes']} of {audit['total_sources']}"
+        )
+        lines.append(
+            f"- **class-disjoint sources (source-classifier risk)**: {audit['class_disjoint_sources']}"
+        )
+        lines.append(
+            f"- **exploratory only (strong release claims blocked)**: {audit['exploratory_only']}"
+        )
+        for reason in audit.get("reasons", []):
+            lines.append(f"  - {reason}")
+        lines.append("")
+
     lines += [
         "## Interpretation limits",
         "",
