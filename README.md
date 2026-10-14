@@ -3,9 +3,10 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/backbay-labs/copley/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/backbay-labs/copley/ci.yml?branch=main&amp;label=CI&amp;style=flat&amp;labelColor=30363d&amp;color=59636e" alt="CI status"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache--2.0-59636e?style=flat&amp;labelColor=30363d" alt="Code license: Apache-2.0"></a>
-  <a href="MODEL_CARD.md"><img src="https://img.shields.io/badge/Stage-Research-59636e?style=flat&amp;labelColor=30363d" alt="Stage: research"></a>
+  <a href="https://github.com/backbay-labs/copley/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/backbay-labs/copley/ci.yml?branch=main&amp;label=CI&amp;style=flat&amp;labelColor=30363d" alt="CI status"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache--2.0-007ec6?style=flat&amp;labelColor=30363d" alt="Code license: Apache-2.0"></a>
+  <a href="MODEL_CARD.md"><img src="https://img.shields.io/badge/Stage-Research-d97706?style=flat&amp;labelColor=30363d" alt="Stage: research"></a>
+  <a href="https://pytorch.org/"><img src="https://img.shields.io/badge/Training-PyTorch-EE4C2C?style=flat&amp;logo=pytorch&amp;logoColor=EE4C2C&amp;labelColor=30363d" alt="Neural training: PyTorch"></a>
 </p>
 
 Copley develops **small, open cyber decision models**. Each model maps a bounded window of
